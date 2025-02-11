@@ -81,6 +81,70 @@ class OnPolicyTrainer(RLTrainer):
         # Make sure there is at least one sequence
         batch_size = max(batch_size, self.policy.sequence_length)
 
+        # -- custom pyramids logging --
+        block_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(0, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        wall_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(1, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        goal_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(2, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        switchoff_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(3, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        switchon_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(4, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        stone_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(5, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        nothing_count = sum(
+            [
+                np.stack(
+                    self.update_buffer[self.update_buffer._decode_key(f"obs:{obs_i}")]
+                )[:, range(6, 56, 8)].sum()
+                for obs_i in range(3)
+            ]
+        )
+        # self.update_buffer[self.update_buffer._decode_key('obs:0')][0][range(0,56,8)].sum()
+        # self._stats_reporter.add_stat(
+        #     f"Obs/block",
+        #     np.mean(v),
+        # )
+        breakpoint()
+
         n_sequences = max(
             int(self.hyperparameters.batch_size / self.policy.sequence_length), 1
         )

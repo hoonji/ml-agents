@@ -4,6 +4,8 @@ using UnityEngine.Profiling;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
+using UnityEngine;
+using System;
 
 namespace Unity.MLAgents.Inference
 {
@@ -219,6 +221,48 @@ namespace Unity.MLAgents.Inference
             // Prepare the input tensors to be feed into the engine
             m_TensorGenerator.GenerateTensors(m_InferenceInputs, currentBatchSize, m_Infos);
             Profiler.EndSample();
+
+            // var agentIndex = Array.IndexOf(m_OrderedAgentsRequestingDecisions.ToArray(), 10);
+            // if (agentIndex != -1) 
+            // {
+            //     for (int raySensor = 1; raySensor < 4; raySensor++)
+            //     {
+            //         var sensorInputs = m_InferenceInputs[raySensor];
+            //         var readableTensor = ((Tensor<float>)sensorInputs.data).AsReadOnlyNativeArray();
+            //         Debug.LogFormat("Ray Sensor {0}", raySensor);
+            //         for (int i = agentIndex*56; i < 56; i+=8)
+            //         {
+            //             Debug.LogFormat("{0} {1} {2} {3} {4} {5} {6} {7}",
+            //             readableTensor[i],
+            //             readableTensor[i + 1],
+            //             readableTensor[i + 2],
+            //             readableTensor[i + 3],
+            //             readableTensor[i + 4],
+            //             readableTensor[i + 5],
+            //             readableTensor[i + 6],
+            //             readableTensor[i + 7]
+            //             );
+            //         }
+            //     }
+            //     var vectorInput = m_InferenceInputs[4];
+            //     var readableVectorTensor = ((Tensor<float>)vectorInput.data).AsReadOnlyNativeArray();
+            //     Debug.Log("Vector Sensor");
+            //     Debug.LogFormat("{0} {1} {2} {3}",
+            //         readableVectorTensor[agentIndex * 4],
+            //         readableVectorTensor[agentIndex * 4 + 1],
+            //         readableVectorTensor[agentIndex * 4 + 2],
+            //         readableVectorTensor[agentIndex * 4 + 3]
+            //     );
+            // }
+            // var vectorInput2 = m_InferenceInputs[4];
+            // var readableVectorTensor2 = ((Tensor<float>)vectorInput2.data).AsReadOnlyNativeArray();
+            // for (int i = 0; i < m_OrderedAgentsRequestingDecisions.Count; i++)
+            // {
+            //     if (readableVectorTensor2[i * 4] == 1)
+            //     {
+            //         Debug.LogFormat("Found Agent!: {0}", m_OrderedAgentsRequestingDecisions[i]);
+            //     }
+            // }
 
             Profiler.BeginSample($"PrepareSentisInputs");
             PrepareSentisInputs(m_InferenceInputs);

@@ -216,13 +216,22 @@ class RLTrainer(Trainer):
 
     @abc.abstractmethod
     def _process_trajectory(self, trajectory: Trajectory) -> None:
-        """
-        Takes a trajectory and processes it, putting it into the update buffer.
-        :param trajectory: The Trajectory tuple containing the steps to be processed.
-        """
-        self._maybe_write_summary(self.get_step + len(trajectory.steps))
-        self._maybe_save_model(self.get_step + len(trajectory.steps))
-        self._increment_step(len(trajectory.steps), trajectory.behavior_id)
+      """
+      Takes a trajectory and processes it, putting it into the update buffer.
+      :param trajectory: The Trajectory tuple containing the steps to be processed.
+      """
+      # self.stats_reporter.add_stat("obs/wall", np.concatenate(trajectory.steps[0].obs)[range(1,168,8)].sum())
+      # self.stats_reporter.add_stat("obs/block", sum([np.concatenate(s.obs)[range(0,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/wall", sum([np.concatenate(s.obs)[range(1,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/goal", sum([np.concatenate(s.obs)[range(2,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/switchOff", sum([np.concatenate(s.obs)[range(3,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/switchOn", sum([np.concatenate(s.obs)[range(4,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/stone", sum([np.concatenate(s.obs)[range(5,168,8)].sum() for s in trajectory.steps]))
+      # self.stats_reporter.add_stat("obs/toggledSwitch", sum([np.concatenate(s.obs)[168] for s in trajectory.steps]))
+
+      self._maybe_write_summary(self.get_step + len(trajectory.steps))
+      self._maybe_save_model(self.get_step + len(trajectory.steps))
+      self._increment_step(len(trajectory.steps), trajectory.behavior_id)
 
     def _maybe_write_summary(self, step_after_process: int) -> None:
         """
